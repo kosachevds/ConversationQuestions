@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	token := os.Args[1]
+	token := os.Getenv("FOOBOT_TOKEN")
 	bot, err := tgbotapi.NewBotAPI(token)
 	if err != nil {
 		log.Panic(err)
