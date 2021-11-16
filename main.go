@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"os"
 
-	tgbotapi "github.com/Syfaro/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
 func main() {
@@ -28,7 +28,7 @@ func main() {
 	ucfg := tgbotapi.NewUpdate(0)
 
 	ucfg.Timeout = 60
-	updatesChan, err := bot.GetUpdatesChan(ucfg)
+	updatesChan := bot.GetUpdatesChan(ucfg)
 
 	for {
 		select {
