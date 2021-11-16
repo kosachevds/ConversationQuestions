@@ -21,20 +21,18 @@ type MessageResponse struct {
 	Message string `json:"message"`
 }
 
-func downloadAnswersFile(gistId, accessToken string) {
+func downloadAnswersFile(gistId, accessToken string) error {
 	downloadUrl := "https://api.github.com/gists/" + gistId
 
 	req, err := http.NewRequest("GET", downloadUrl, nil)
 	if err != nil {
-		fmt.Printf("%s", err)
-		os.Exit(1)
+		return err
 	}
 
 	req.Header.Set("Authorization", "token "+accessToken)
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		fmt.Printf("%s", err)
-		os.Exit(1)
+		return err
 	}
 
 	defer res.Body.Close()
@@ -45,20 +43,19 @@ func downloadAnswersFile(gistId, accessToken string) {
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		fmt.Printf("%s", err)
-		os.Exit(1)
+		return err
 	}
 
 	var jsonRes Response
 	err = json.Unmarshal(body, &jsonRes)
 	if err != nil {
-		fmt.Printf("%s", err)
-		os.Exit(1)
+		return err
 	}
 
 	for _, file := range jsonRes.Files {
 		ioutil.WriteFile(file.FileName, []byte(file.Content), 0660)
 	}
+	return nil
 }
 
 func printErrorMessage(resp *http.Response) {
