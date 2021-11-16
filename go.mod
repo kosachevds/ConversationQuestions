@@ -1,7 +1,7 @@
 module github.com/kosachevds/testTGBot
 
-// +heroku goVersion go1.13
-go 1.13
+// +heroku goVersion go1.17
+go 1.17
 
 require (
 	github.com/Syfaro/telegram-bot-api v4.6.4+incompatible
