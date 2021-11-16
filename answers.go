@@ -21,7 +21,7 @@ type MessageResponse struct {
 	Message string `json:"message"`
 }
 
-func downloadAnswers(gistId, accessToken string) ([]string, error) {
+func downloadQuestions(gistId, accessToken string) ([]string, error) {
 	downloadUrl := "https://api.github.com/gists/" + gistId
 
 	req, err := http.NewRequest("GET", downloadUrl, nil)
@@ -52,15 +52,15 @@ func downloadAnswers(gistId, accessToken string) ([]string, error) {
 		return nil, err
 	}
 
-	var answers []string
+	var questions []string
 	for _, file := range jsonRes.Files {
-		err = json.Unmarshal([]byte(file.Content), &answers)
+		err = json.Unmarshal([]byte(file.Content), &questions)
 		if err != nil {
 			return nil, err
 		}
 		break
 	}
-	return answers, nil
+	return questions, nil
 }
 
 func printErrorMessage(resp *http.Response) {

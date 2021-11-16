@@ -20,7 +20,7 @@ func main() {
 
 	questionsGist := os.Getenv("QUESTIONS_GIST_ID")
 	accessToken := os.Getenv("QUESTIONS_GIST_TOKEN")
-	questions, err := downloadAnswers(questionsGist, accessToken)
+	questions, err := downloadQuestions(questionsGist, accessToken)
 	if err != nil {
 		log.Printf("Questions loading error: %s", err)
 	}
