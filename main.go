@@ -30,11 +30,11 @@ func main() {
 	ucfg.Timeout = 60
 	updatesChan := bot.GetUpdatesChan(ucfg)
 
-	for {
-		select {
-		case update := <-updatesChan:
-			processUpdate(bot, update, questions)
+	for update := range updatesChan {
+		if update.Message == nil {
+			continue
 		}
+		processUpdate(bot, update, questions)
 	}
 }
 
