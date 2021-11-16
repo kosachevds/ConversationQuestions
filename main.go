@@ -25,12 +25,16 @@ func main() {
 	for {
 		select {
 		case update := <-updatesChan:
-			userName := update.Message.From.UserName
-			chatId := update.Message.Chat.ID
-			text := update.Message.Text
-			log.Printf("[%s] %d %s", userName, chatId, text)
-			msg := tgbotapi.NewMessage(chatId, text)
-			bot.Send(msg)
+			processUpdate(bot, update)
 		}
 	}
+}
+
+func processUpdate(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
+	userName := update.Message.From.UserName
+	chatId := update.Message.Chat.ID
+	text := update.Message.Text
+	log.Printf("[%s] %d %s", userName, chatId, text)
+	msg := tgbotapi.NewMessage(chatId, text)
+	bot.Send(msg)
 }
