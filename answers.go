@@ -59,8 +59,6 @@ func downloadAnswersFile(gistId, accessToken string) {
 	}
 
 	for _, file := range jsonRes.Files {
-		fmt.Printf("Downloading %s\n", file.FileName)
-		fmt.Printf("Downloading %s\n", file.RawUrl)
 		ioutil.WriteFile(file.FileName, []byte(file.Content), 0660)
 	}
 }
