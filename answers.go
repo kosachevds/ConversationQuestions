@@ -14,13 +14,11 @@ type Response struct {
 
 type FileDetails struct {
 	FileName string `json:"filename"`
-	RawUrl   string `json:"raw_url"`
 	Content  string `json:"content"`
 }
 
 type MessageResponse struct {
-	Message          string `json:"message"`
-	DocumentationUrl string `json:"documentation_url"`
+	Message string `json:"message"`
 }
 
 func downloadAnswersFile(gistId, accessToken string) {
