@@ -31,14 +31,14 @@ func main() {
 	updatesChan := bot.GetUpdatesChan(ucfg)
 
 	for update := range updatesChan {
-		if update.Message == nil {
-			continue
-		}
 		processUpdate(bot, update, questions)
 	}
 }
 
 func processUpdate(bot *tgbotapi.BotAPI, update tgbotapi.Update, questions []string) {
+	if update.Message == nil {
+		return
+	}
 	userName := update.Message.From.UserName
 	chatId := update.Message.Chat.ID
 	text := update.Message.Text
