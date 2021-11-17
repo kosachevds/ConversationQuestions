@@ -31,12 +31,11 @@ func main() {
 	updatesChan := bot.GetUpdatesChan(ucfg)
 
 	for update := range updatesChan {
-		processUpdate(bot, update, questions)
+		processMessage(bot, update.Message, questions)
 	}
 }
 
-func processUpdate(bot *tgbotapi.BotAPI, update tgbotapi.Update, questions []string) {
-	message := update.Message
+func processMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message, questions []string) {
 	if message == nil {
 		return
 	}
