@@ -40,6 +40,9 @@ func processMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message, questions [
 		return
 	}
 	logMessage(message)
+	if !message.IsCommand() {
+		return
+	}
 
 	var answerMessage string
 	if len(questions) == 0 {
