@@ -44,14 +44,13 @@ func processMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message, questions [
 		return
 	}
 
-	var answerMessage string
+	answer := tgbotapi.NewMessage(message.Chat.ID, "")
 	if len(questions) == 0 {
-		answerMessage = "Answers unavailable"
+		answer.Text = "Answers unavailable"
 	} else {
-		answerMessage = questions[rand.Intn(len(questions))]
+		answer.Text = questions[rand.Intn(len(questions))]
 	}
-	msg := tgbotapi.NewMessage(message.Chat.ID, answerMessage)
-	bot.Send(msg)
+	bot.Send(answer)
 }
 
 func logMessage(message *tgbotapi.Message) {
