@@ -36,13 +36,11 @@ func main() {
 }
 
 func processUpdate(bot *tgbotapi.BotAPI, update tgbotapi.Update, questions []string) {
-	if update.Message == nil {
+	message := update.Message
+	if message == nil {
 		return
 	}
-	userName := update.Message.From.UserName
-	chatId := update.Message.Chat.ID
-	text := update.Message.Text
-	log.Printf("[%s] %d %s", userName, chatId, text)
+	logMessage(message)
 
 	var answerMessage string
 	if len(questions) == 0 {
@@ -50,6 +48,15 @@ func processUpdate(bot *tgbotapi.BotAPI, update tgbotapi.Update, questions []str
 	} else {
 		answerMessage = questions[rand.Intn(len(questions))]
 	}
-	msg := tgbotapi.NewMessage(chatId, answerMessage)
+	msg := tgbotapi.NewMessage(message.Chat.ID, answerMessage)
 	bot.Send(msg)
+}
+
+func logMessage(message *tgbotapi.Message) {
+	log.Printf(
+		"[%s] %d %s",
+		message.From.UserName,
+		message.Chat.ID,
+		message.Text,
+	)
 }
