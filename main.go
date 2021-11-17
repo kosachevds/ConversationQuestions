@@ -44,6 +44,10 @@ func processMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message, questions [
 		return
 	}
 
+	if message.Command() != "ask" {
+		return
+	}
+
 	answer := tgbotapi.NewMessage(message.Chat.ID, "")
 	if len(questions) == 0 {
 		answer.Text = "Answers unavailable"
