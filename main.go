@@ -43,7 +43,7 @@ func processMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message, questions [
 	logMessage(message)
 
 	deletionMessage := tgbotapi.NewDeleteMessage(message.Chat.ID, message.MessageID)
-	sendMessage(bot, deletionMessage)
+	bot.Send(deletionMessage)
 
 	if message.Command() != "ask" {
 		return
@@ -62,7 +62,7 @@ func processMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message, questions [
 			tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("/ask")))
 	}
 
-	sendMessage(bot, answer)
+	bot.Send(answer)
 }
 
 func logMessage(message *tgbotapi.Message) {
@@ -83,10 +83,4 @@ func initBot() (*tgbotapi.BotAPI, error) {
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 	bot.Debug = true
 	return bot, nil
-}
-
-func sendMessage(bot *tgbotapi.BotAPI, message tgbotapi.Chattable) {
-	if _, err := bot.Send(message); err != nil {
-		log.Panic(err)
-	}
 }
