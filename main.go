@@ -88,5 +88,8 @@ func initBot() (*tgbotapi.BotAPI, error) {
 
 func deleteMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
 	config := tgbotapi.NewDeleteMessage(message.Chat.ID, message.MessageID)
-	bot.Request(config)
+	_, err := bot.Request(config)
+	if err != nil {
+		log.Panic(err)
+	}
 }
