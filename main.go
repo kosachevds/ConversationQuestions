@@ -42,8 +42,7 @@ func processMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message, questions [
 	}
 	logMessage(message)
 
-	deletionMessage := tgbotapi.NewDeleteMessage(message.Chat.ID, message.MessageID)
-	bot.Request(deletionMessage)
+	deleteMessage(bot, message)
 
 	if message.Command() != "ask" {
 		return
@@ -85,4 +84,9 @@ func initBot() (*tgbotapi.BotAPI, error) {
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 	bot.Debug = true
 	return bot, nil
+}
+
+func deleteMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
+	config := tgbotapi.NewDeleteMessage(message.Chat.ID, message.MessageID)
+	bot.Request(config)
 }
