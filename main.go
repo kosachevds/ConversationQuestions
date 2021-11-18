@@ -4,6 +4,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -17,6 +18,8 @@ func main() {
 
 	bot.Debug = true
 	log.Printf("Authorized on account %s", bot.Self.UserName)
+
+	rand.Seed(time.Now().Unix())
 
 	questionsGist := os.Getenv("QUESTIONS_GIST_ID")
 	accessToken := os.Getenv("QUESTIONS_GIST_TOKEN")
