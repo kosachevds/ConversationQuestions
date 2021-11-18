@@ -9,6 +9,8 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
+var keyboardFlags map[int64]bool
+
 func main() {
 	rand.Seed(time.Now().Unix())
 
@@ -53,6 +55,13 @@ func processMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message, questions [
 	} else {
 		answer.Text = questions[rand.Intn(len(questions))]
 	}
+
+	if _, ok := keyboardFlags[message.Chat.ID]; !ok {
+		keyboardFlags[message.Chat.ID] = true
+		answer.ReplyMarkup = tgbotapi.NewReplyKeyboard(
+			tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("/ask")))
+	}
+
 	bot.Send(answer)
 }
 
