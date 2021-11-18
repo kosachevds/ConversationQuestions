@@ -43,10 +43,6 @@ func processMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message, questions [
 	deletionMessage := tgbotapi.NewDeleteMessage(message.Chat.ID, message.MessageID)
 	bot.Send(deletionMessage)
 
-	if !message.IsCommand() {
-		return
-	}
-
 	if message.Command() != "ask" {
 		return
 	}
