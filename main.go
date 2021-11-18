@@ -10,16 +10,12 @@ import (
 )
 
 func main() {
-	token := os.Getenv("BOT_ACCESS_TOKEN")
-	bot, err := tgbotapi.NewBotAPI(token)
+	rand.Seed(time.Now().Unix())
+
+	bot, err := initBot()
 	if err != nil {
 		log.Panic(err)
 	}
-
-	bot.Debug = true
-	log.Printf("Authorized on account %s", bot.Self.UserName)
-
-	rand.Seed(time.Now().Unix())
 
 	questionsGist := os.Getenv("QUESTIONS_GIST_ID")
 	accessToken := os.Getenv("QUESTIONS_GIST_TOKEN")
@@ -71,4 +67,15 @@ func logMessage(message *tgbotapi.Message) {
 		message.Chat.ID,
 		message.Text,
 	)
+}
+
+func initBot() (*tgbotapi.BotAPI, error) {
+	token := os.Getenv("BOT_ACCESS_TOKEN")
+	bot, err := tgbotapi.NewBotAPI(token)
+	if err != nil {
+		return nil, err
+	}
+	log.Printf("Authorized on account %s", bot.Self.UserName)
+	bot.Debug = true
+	return bot, nil
 }
