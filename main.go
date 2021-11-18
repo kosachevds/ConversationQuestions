@@ -9,7 +9,7 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-var keyboardFlags map[int64]bool
+var keyboardFlags = map[int64]bool{}
 
 func main() {
 	rand.Seed(time.Now().Unix())
