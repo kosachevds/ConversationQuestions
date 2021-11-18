@@ -62,7 +62,9 @@ func processMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message, questions [
 			tgbotapi.NewKeyboardButtonRow(tgbotapi.NewKeyboardButton("/ask")))
 	}
 
-	bot.Send(answer)
+	if _, err := bot.Send(answer); err != nil {
+		log.Panic(err)
+	}
 }
 
 func logMessage(message *tgbotapi.Message) {
