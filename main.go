@@ -106,13 +106,12 @@ func deleteMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
 }
 
 func initWebhookUpdatesChan(bot *tgbotapi.BotAPI, app_url string) (tgbotapi.UpdatesChannel, error) {
-	port := os.Getenv("PORT")
 	info, err := bot.GetWebhookInfo()
 	if err != nil {
 		return nil, err
 	}
 	if len(info.URL) == 0 {
-		url := app_url + port + bot.Token
+		url := app_url + bot.Token
 		config, err := tgbotapi.NewWebhook(url)
 		if err != nil {
 			return nil, err
@@ -132,6 +131,6 @@ func initWebhookUpdatesChan(bot *tgbotapi.BotAPI, app_url string) (tgbotapi.Upda
 	}
 
 	updates := bot.ListenForWebhook("/" + bot.Token)
-	go http.ListenAndServe(":"+port, nil)
+	go http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 	return updates, nil
 }
