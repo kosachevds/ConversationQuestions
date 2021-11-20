@@ -107,7 +107,6 @@ func deleteMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
 
 func initWebhookUpdatesChan(bot *tgbotapi.BotAPI, app_url string) (tgbotapi.UpdatesChannel, error) {
 	port := os.Getenv("PORT")
-	log.Printf("PORT = %s\n", port)
 	info, err := bot.GetWebhookInfo()
 	if err != nil {
 		return nil, err
