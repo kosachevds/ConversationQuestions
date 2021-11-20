@@ -81,9 +81,9 @@ func initBot() (*tgbotapi.BotAPI, tgbotapi.UpdatesChannel, error) {
 	bot.Debug = true
 
 	var updates tgbotapi.UpdatesChannel = nil
-	heroku_url := os.Getenv("HEROKU_URL")
-	if len(heroku_url) > 0 {
-		updates, err = initWebhookUpdatesChan(bot, heroku_url)
+	app_url := os.Getenv("APP_URL")
+	if len(app_url) > 0 {
+		updates, err = initWebhookUpdatesChan(bot, app_url)
 		if err != nil {
 			log.Printf("Launch via webhook error: %s", err)
 		}
