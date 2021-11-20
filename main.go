@@ -124,6 +124,6 @@ func initWebhookUpdatesChan(bot *tgbotapi.BotAPI, app_url string) (tgbotapi.Upda
 		log.Printf("Telegram callback failed: %s", info.LastErrorMessage)
 	}
 	updates := bot.ListenForWebhook("/" + bot.Token)
-	go http.ListenAndServe("0.0.0.0:"+port, nil)
+	go http.ListenAndServe(":"+port, nil)
 	return updates, nil
 }
