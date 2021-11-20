@@ -80,9 +80,19 @@ func initBot() (*tgbotapi.BotAPI, tgbotapi.UpdatesChannel, error) {
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 	bot.Debug = true
 
-	ucfg := tgbotapi.NewUpdate(0)
-	ucfg.Timeout = 60
-	updates := bot.GetUpdatesChan(ucfg)
+	var updates tgbotapi.UpdatesChannel = nil
+	heroku_url := os.Getenv("HEROKU_URL")
+	if len(heroku_url) > 0 {
+		updates, err = initWebhookUpdatesChan(bot, heroku_url)
+		if err != nil {
+			log.Printf("Launch via webhook error: %s", err)
+		}
+	}
+	if updates == nil {
+		ucfg := tgbotapi.NewUpdate(0)
+		ucfg.Timeout = 60
+		updates = bot.GetUpdatesChan(ucfg)
+	}
 
 	return bot, updates, nil
 }
