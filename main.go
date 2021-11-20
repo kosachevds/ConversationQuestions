@@ -95,9 +95,9 @@ func deleteMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
 	}
 }
 
-func initWebhookUpdatesChan(bot *tgbotapi.BotAPI) (tgbotapi.UpdatesChannel, error) {
+func initWebhookUpdatesChan(bot *tgbotapi.BotAPI, app_url string) (tgbotapi.UpdatesChannel, error) {
 	port := os.Getenv("PORT")
-	url := os.Getenv("HEROKU_URL") + port + bot.Token
+	url := app_url + port + bot.Token
 	config, err := tgbotapi.NewWebhook(url)
 	if err != nil {
 		return nil, err
