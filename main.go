@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"math/rand"
+	"net/http"
 	"os"
 	"time"
 
@@ -92,4 +93,27 @@ func deleteMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
 	if err != nil {
 		log.Panic(err)
 	}
+}
+
+func initWebhookUpdatesChan(bot *tgbotapi.BotAPI) (tgbotapi.UpdatesChannel, error) {
+	port := os.Getenv("PORT")
+	url := os.Getenv("HEROKU_URL") + port + bot.Token
+	config, err := tgbotapi.NewWebhook(url)
+	if err != nil {
+		return nil, err
+	}
+	_, err = bot.Request(config)
+	if err != nil {
+		return nil, err
+	}
+	info, err := bot.GetWebhookInfo()
+	if err != nil {
+		return nil, err
+	}
+	if info.LastErrorDate != 0 {
+		log.Printf("Telegram callback failed: %s", info.LastErrorMessage)
+	}
+	updates := bot.ListenForWebhook("/" + bot.Token)
+	go http.ListenAndServe("0.0.0.0:"+port, nil)
+	return updates, nil
 }
