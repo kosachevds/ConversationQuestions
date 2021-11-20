@@ -14,7 +14,7 @@ var keyboardFlags = map[int64]bool{}
 func main() {
 	rand.Seed(time.Now().Unix())
 
-	bot, err := initBot()
+	bot, updates, err := initBot()
 	if err != nil {
 		log.Panic(err)
 	}
@@ -26,12 +26,7 @@ func main() {
 		log.Printf("Questions loading error: %s", err)
 	}
 
-	ucfg := tgbotapi.NewUpdate(0)
-
-	ucfg.Timeout = 60
-	updatesChan := bot.GetUpdatesChan(ucfg)
-
-	for update := range updatesChan {
+	for update := range updates {
 		processMessage(bot, update.Message, questions)
 	}
 }
@@ -75,15 +70,20 @@ func logMessage(message *tgbotapi.Message) {
 	)
 }
 
-func initBot() (*tgbotapi.BotAPI, error) {
+func initBot() (*tgbotapi.BotAPI, tgbotapi.UpdatesChannel, error) {
 	token := os.Getenv("BOT_ACCESS_TOKEN")
 	bot, err := tgbotapi.NewBotAPI(token)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 	bot.Debug = true
-	return bot, nil
+
+	ucfg := tgbotapi.NewUpdate(0)
+	ucfg.Timeout = 60
+	updates := bot.GetUpdatesChan(ucfg)
+
+	return bot, updates, nil
 }
 
 func deleteMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
