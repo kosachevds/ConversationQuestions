@@ -26,11 +26,11 @@ func main() {
 	}
 
 	for update := range updates {
-		processMessage(bot, update.Message, questions)
+		processMessage(bot, questions, update.Message)
 	}
 }
 
-func processMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message, questions []string) {
+func processMessage(bot *tgbotapi.BotAPI, questions []string, message *tgbotapi.Message) {
 	if message == nil {
 		return
 	}
