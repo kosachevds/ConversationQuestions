@@ -25,12 +25,13 @@ func main() {
 		log.Printf("Questions loading error: %s", err)
 	}
 
+	sequences := map[int64]*QuestionsSequence{}
 	for update := range updates {
-		processMessage(bot, questions, update.Message)
+		processMessage(bot, questions, sequences, update.Message)
 	}
 }
 
-func processMessage(bot *tgbotapi.BotAPI, questions []string, message *tgbotapi.Message) {
+func processMessage(bot *tgbotapi.BotAPI, questions []string, sequences map[int64]*QuestionsSequence, message *tgbotapi.Message) {
 	if message == nil {
 		return
 	}
@@ -46,7 +47,7 @@ func processMessage(bot *tgbotapi.BotAPI, questions []string, message *tgbotapi.
 	if len(questions) == 0 {
 		answer.Text = "Answers unavailable"
 	} else {
-		answer.Text = questions[rand.Intn(len(questions))]
+		answer.Text = getNextQuestion(sequences, message.Chat.ID, questions)
 	}
 
 	if _, err := bot.Send(answer); err != nil {
