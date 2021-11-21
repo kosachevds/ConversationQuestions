@@ -38,7 +38,7 @@ func processMessage(bot *tgbotapi.BotAPI, message *tgbotapi.Message, questions [
 
 	deleteMessage(bot, message)
 
-	if message.Command() != "ask" {
+	if message.Command() != "next" {
 		return
 	}
 
