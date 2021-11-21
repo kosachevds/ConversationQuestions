@@ -10,6 +10,8 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
+const SequenceLifetime time.Duration = 24 * time.Hour
+
 func main() {
 	rand.Seed(time.Now().Unix())
 
@@ -142,5 +144,8 @@ func getNextQuestion(sequences map[int64]*QuestionsSequence, chatId int64, quest
 		return sequence.Next()
 	}
 	sequences[chatId] = newQuestionsSequenceShuffle(questions)
+	time.AfterFunc(SequenceLifetime, func() {
+		delete(sequences, chatId)
+	})
 	return sequences[chatId].Next()
 }
