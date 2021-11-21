@@ -135,3 +135,11 @@ func setWebhook(bot *tgbotapi.BotAPI, app_url string) error {
 	}
 	return nil
 }
+
+func getNextQuestion(sequences map[int64]*QuestionsSequence, chatId int64, questions []string) string {
+	if sequence, ok := sequences[chatId]; ok {
+		return sequence.Next()
+	}
+	sequences[chatId] = newQuestionsSequenceShuffle(questions)
+	return sequences[chatId].Next()
+}
