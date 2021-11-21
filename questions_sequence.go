@@ -18,6 +18,12 @@ func newQuestionsSequence(questions []string) *QuestionsSequence {
 	return qs
 }
 
+func newQuestionsSequenceShuffle(questions []string) *QuestionsSequence {
+	qs := newQuestionsSequence(questions)
+	qs.Shuffle()
+	return qs
+}
+
 func (qs *QuestionsSequence) Next() string {
 	result := qs.questions[qs.i]
 	qs.i = (qs.i + 1) % len(qs.questions)
