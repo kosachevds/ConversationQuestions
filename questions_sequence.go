@@ -13,3 +13,9 @@ func newQuestionsSequence(questions []string) *QuestionsSequence {
 	copy(qs.questions, questions)
 	return qs
 }
+
+func (qs *QuestionsSequence) Next() string {
+	result := qs.questions[qs.i]
+	qs.i = (qs.i + 1) % len(qs.questions)
+	return result
+}
