@@ -7,7 +7,7 @@ type ShuffledSequence struct {
 	values []int
 }
 
-func newShuffledSequence(size int) ShuffledSequence {
+func newShuffledSequence(size int) *ShuffledSequence {
 	values := make([]int, size)
 	for i := range values {
 		values[i] = i
@@ -15,7 +15,7 @@ func newShuffledSequence(size int) ShuffledSequence {
 	rand.Shuffle(size, func(i, j int) {
 		values[i], values[j] = values[j], values[i]
 	})
-	return ShuffledSequence{
+	return &ShuffledSequence{
 		i:      0,
 		values: values,
 	}
