@@ -26,3 +26,7 @@ func (ss *ShuffledSequence) Next() int {
 	ss.i = (ss.i + 1) % len(ss.values)
 	return result
 }
+
+func (ss *ShuffledSequence) NextFrom(values []interface{}) interface{} {
+	return values[ss.Next()]
+}
