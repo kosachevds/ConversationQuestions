@@ -27,13 +27,13 @@ func main() {
 		log.Printf("Questions loading error: %s", err)
 	}
 
-	sequences := map[int64]*QuestionsSequence{}
+	sequences := map[int64]*ShuffledSequence{}
 	for update := range updates {
 		processMessage(bot, questions, sequences, update.Message)
 	}
 }
 
-func processMessage(bot *tgbotapi.BotAPI, questions []string, sequences map[int64]*QuestionsSequence, message *tgbotapi.Message) {
+func processMessage(bot *tgbotapi.BotAPI, questions []string, sequences map[int64]*ShuffledSequence, message *tgbotapi.Message) {
 	if message == nil {
 		return
 	}
@@ -139,13 +139,13 @@ func setWebhook(bot *tgbotapi.BotAPI, app_url string) error {
 	return nil
 }
 
-func getNextQuestion(sequences map[int64]*QuestionsSequence, chatId int64, questions []string) string {
+func getNextQuestion(sequences map[int64]*ShuffledSequence, chatId int64, questions []string) string {
 	if sequence, ok := sequences[chatId]; ok {
-		return sequence.Next()
+		return questions[sequence.Next()]
 	}
-	sequences[chatId] = newQuestionsSequenceShuffle(questions)
+	sequences[chatId] = newShuffledSequence(len(questions))
 	time.AfterFunc(SequenceLifetime, func() {
 		delete(sequences, chatId)
 	})
-	return sequences[chatId].Next()
+	return questions[sequences[chatId].Next()]
 }
