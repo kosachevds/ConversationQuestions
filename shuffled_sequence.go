@@ -20,3 +20,9 @@ func newShuffledSequence(size int) ShuffledSequence {
 		values: values,
 	}
 }
+
+func (ss *ShuffledSequence) Next() int {
+	result := ss.values[ss.i]
+	ss.i = (ss.i + 1) % len(ss.values)
+	return result
+}
